@@ -1,4 +1,281 @@
 #include<stdio.h>
 int main(){
-  printf("Hello World");
+  printf("Hello World\n这可不是普普通通的Hello World 这可是王维诗里的Hello World");
 }
+
+/*
+第一次写着玩意儿看看就行：
+    我高中的时候第一次接触C这个东西，当时上课听的一窍不通，像听天书一样根本摸不着北，总得来说就只知道始于printf("Hello World"); 终于switch循环
+    到了大学后，再一次的接触到了这个甚是熟悉却又很陌生的C，这次我暗自发誓一定要把这个东西给摸透，到了第一节课翻开书后别的不认识，但那句Hello World甚是怀念，前面的学习到挺好理
+解，毕竟高中就算再拉垮好歹也是认认真真的过了一遍，现在再看起来倒不是什么难事了
+    日复一日的课程也没有高中时的那么枯燥乏味了，但好景不长，数组刚过完后老师却不往后面讲了，大学老师都不带把课讲完的，我人直接傻了，怎么又是这样，又不把课讲完，好不容易到关键
+的地方，指针这东西老师也是象征性的讲解了一点，真就是一点点，而且却还没能听个明白，印象最深的就是什么指针是指向一个特定内存地址的一个变量，那指针又是哪来的，又是听的云里雾里的
+    时间很快，一晃就来到了大二，看着班群中罗列出的课表时发现了几个醒目的大字  “C语言课程设计”  ，什么鬼，这不是已经上过了吗又上一遍，在和同学的讨论中才发现是※课程设计※，原来
+是这样啊，到了课程设计时老师给我们的任务是设计一个学生管理系统出来，心想我听过系统，见过系统，没想到自己还能来设计系统，又激动又害怕，C学的半斤八两的怎么设计得出系统呢，老师却
+说会带着我们写一半的代码然后通过自己所学和查找资料来完成剩下的代码，还好还好有示例应该难度不大，几天后，老师说基本的思路和一些功能已经实现了，剩下的由你们来完成吧，我才突然回过
+神来，这么快吗，这都是些什么啊，什么函数，什么结构体，特别又又又是那个指针，怎么都是些没有见过的，完了完了...... 等等，这些东西好像书上见过，最终临近截止日期前两天把这个系统写
+完，真不容易啊，这就是编程，这既是C啊
+    过后没办法，我也是在网上不断的找资料想了解的更清楚一点，但都是零零散散的一些，东拼西凑也拼不出个名堂来，最终把目标锁定到了B站上的一个
+UP发的关于C的课程（https://www.bilibili.com/video/BV1q54y1q79w/?p=7&spm_id_from=pageDriver&vd_source=4c707e922668c519d9b2c0d46eaebc27），不仅讲得好而且还易懂，当然好的课程
+不知一个，只是我是通过这个视频才彻底了解了C这个东西，关于什么指针的什么结构体的我直接是一听就恍然大悟，biubiubiu
+
+---------------------------------------
+#include<stdio.h>
+#include <string.h>
+int renum;
+struct Student
+{
+	char xh[20];
+	char name[10];
+	char xb[10];
+	char csny[20];
+	char jg[20];
+	char num[20];
+	char cj[20];
+};
+struct Student students[10];
+void menu(){
+	printf("*********************************\n");
+	printf("|-------------------------------|\n");
+	printf("|	1.读取学生信息数据	|\n");
+	printf("|-------------------------------|\n");
+	printf("|	2.按学号查询		|\n");
+	printf("|-------------------------------|\n");
+	printf("|	3.按姓名查询		|\n");
+	printf("|-------------------------------|\n");
+	printf("|	4.按成绩排序		|\n");
+	printf("|-------------------------------|\n");
+	printf("|	5.添加学生信息		|\n");
+	printf("|-------------------------------|\n");
+	printf("|	6.删除学生信息		|\n");
+	printf("|-------------------------------|\n");
+	printf("|	7.修改学生信息		|\n");
+	printf("|-------------------------------|\n");
+	printf("|	8.退出			|\n");
+	printf("|-------------------------------|\n");
+	printf("*********************************\n");
+}
+void readfile()          //读取学生信息
+{
+int i=0;
+	char str[80];
+	FILE *fp;
+	fp=fopen("JY0428.txt","r");
+	if(fp==NULL)
+		printf("对不起，文件打开失败");
+		fgets(str,80,fp);
+	printf("学号	姓名	性别	出生年月	籍贯	电话	成绩\n");
+	while(!feof(fp))
+	{
+		fscanf(fp,"%s	%s	%s	%s	%s	%s	%s\n",students[i].xh,students[i].name,students[i].xb,students[i].csny,students[i].jg,students[i].num,students[i].cj);
+		printf("%s	%s	%s	%s	%s	%s	%s\n",students[i].xh,students[i].name,students[i].xb,students[i].csny,students[i].jg,students[i].num,students[i].cj);
+		i++;
+	}
+	renum=i;
+}
+void xhfind()             //按学号查询
+{
+	int i;
+	int flag=1;
+	char str[20];
+	printf("请输入学生学号");
+	scanf("%s",str);
+	for(i=0;i<renum;i++)
+	{
+		if(strcmp(str,students[i].xh)==0)
+		{printf("%s	%s	%s	%s	%s	%s	%s\n",students[i].xh,students[i].name,students[i].xb,students[i].csny,students[i].jg,students[i].num,students[i].cj);
+		flag=0;}
+		}
+	if(flag)
+		printf("未查找到该学号");
+}
+void xmfind()            //按姓名查询
+{
+	int flag=1;
+	int i;
+	char str[10];
+	printf("请输入学生姓名");
+	scanf("%s",str);
+	for(i=0;i<renum;i++)
+	{
+		if(strcmp(str,students[i].name)==0)
+		{
+			printf("%s	%s	%s	%s	%s	%s	%s\n",students[i].xh,students[i].name,students[i].xb,students[i].csny,students[i].jg,students[i].num,students[i].cj);
+			flag=0;
+		}
+	}
+	if(flag)
+		printf("未查找到该学生");
+}
+void cjpx()               //按成绩排序
+{ 
+	int i,j;
+	struct Student temp;
+	FILE*fp;
+	fp=fopen("JY0428.txt","w");
+	for(i=0;i<renum;i++)
+	{
+		for(j=0;j<renum-1;j++)
+		{
+			if(strcmp(students[j].cj,students[j+1].cj)>0)
+			{
+				temp=students[j];
+				students[j]=students[j+1];
+				students[j+1]=temp;
+			}
+		}
+	}
+	fprintf(fp,"学号	姓名	性别	出生年月	籍贯	电话	成绩\n");
+	for(i=0;i<renum;i++)
+	{
+		fprintf(fp,"%s	%s	%s	%s	%s	%s	%s\n",students[i].xh,students[i].name,students[i].xb,students[i].csny,students[i].jg,students[i].num,students[i].cj);
+	}
+	printf("排序成功\n");
+	fclose(fp);
+}
+void tjxsxx()             //添加学生信息
+{
+	FILE *fp;
+	char str[20];
+	printf("请输入学号\n");
+	scanf("%s",str);
+	strcpy(students[renum].xh,str);
+		printf("请输入姓名\n");
+	scanf("%s",str);
+	strcpy(students[renum].name,str);
+		printf("请输入性别\n");
+	scanf("%s",str);
+	strcpy(students[renum].xb,str);
+		printf("请输入出生年月\n");
+	scanf("%s",str);
+	strcpy(students[renum].csny,str);
+		printf("请输入籍贯\n");
+	scanf("%s",str);
+	strcpy(students[renum].jg,str);
+		printf("请输入电话\n");
+	scanf("%s",str);
+	strcpy(students[renum].num,str);
+		printf("请输入成绩\n");
+	scanf("%s",str);
+	strcpy(students[renum].cj,str);
+	fp=fopen("JY0428.txt","a+");
+	if(fp==NULL)
+		printf("文件打开失败\n");
+fprintf(fp,"%s	%s	%s	%s	%s	%s	%s\n",students[renum].xh,students[renum].name,students[renum].xb,students[renum].csny,students[renum].jg,students[renum].num,students[renum].cj);
+printf("添加成功\n");
+fclose(fp);
+}
+void scxsxx()               //删除学生信息
+{
+	int i;
+	int flag=0;
+	int j;
+	char str[20];
+		FILE *fp;
+loop:
+		printf("请输入你删除的姓名\n");
+		scanf("%s",str);
+		for(i=0;i<renum+1;i++)
+		{
+			if(!strcmp(str,students[i].name))
+			{
+			for(j=i;j<renum;j++)
+				students[j]=students[j+1];
+			flag=1;
+			}
+		}
+		if(!flag)
+		{
+	printf("未查到此人，删除失败!\n");
+	goto loop;
+		}
+		if((fp=fopen("JY0428.txt","w"))==NULL)
+			printf("删除后的信息如下\n");
+		fprintf(fp,"学号	姓名	性别	出生年月	籍贯	电话	成绩\n");
+		for(i=0;i<renum;i++)
+		{
+			fprintf(fp,"%s	%s	%s	%s	%s	%s	%s\n",students[i].xh,students[i].name,students[i].xb,students[i].csny,students[i].jg,students[i].num,students[i].cj);
+			printf("%s	%s	%s	%s	%s	%s	%s\n",students[i].xh,students[i].name,students[i].xb,students[i].csny,students[i].jg,students[i].num,students[i].cj);
+		}
+			fclose(fp);
+			printf("删除成功!\n");
+}
+void xgxsxx()            //修改学生信息
+{
+	int i;
+	int flag=0;
+	int j;
+	char str[20];
+		FILE *fp;
+		fp=fopen("JY0428.txt","w");
+		printf("请输入你要修改的学生学号");
+		scanf("%s",str);
+		for(i=0;i<renum;i++)
+		{
+			if(strcmp(students[i].xh,str)==0)
+			{
+				printf("学号存在!\n");
+				flag=1;
+				j=i;
+			}
+		}
+		if(flag)
+		{
+			printf("请修改学号\n");
+			scanf("%s",str);
+			strcpy(students[j].xh,str);
+			printf("请修改姓名\n");
+			scanf("%s",str);
+			strcpy(students[j].name,str);
+			printf("请修改性别\n");
+			scanf("%s",str);
+			strcpy(students[j].xb,str);
+			printf("请修改出生年月\n");
+			scanf("%s",str);
+			strcpy(students[j].csny,str);
+			printf("请修改籍贯\n");
+			scanf("%s",str);
+			strcpy(students[j].jg,str);
+			printf("请修改电话\n");
+			scanf("%s",str);
+			strcpy(students[j].num,str);
+			printf("请修改成绩\n");
+			scanf("%s",str);
+			strcpy(students[j].cj,str);
+			printf("修改成功\n");
+		}
+		fprintf(fp,"学号	姓名	性别	出生年月	籍贯	电话	成绩\n");
+		for(i=0;i<renum;i++)
+		{
+			fprintf(fp,"%s	%s	%s	%s	%s	%s	%s\n",students[i].xh,students[i].name,students[i].xb,students[i].csny,students[i].jg,students[i].num,students[i].cj);
+		}
+			fclose(fp);
+}
+void main(){
+	int i;
+loop:menu();
+	printf("请输入操作编号:\n");
+	scanf("%d",&i);
+	switch(i)
+	{
+	case 1:readfile();
+		goto loop;break;
+	case 2:xhfind();
+		goto loop;break;
+	case 3:xmfind();
+		goto loop;break;
+	case 4:cjpx();
+		goto loop;break;
+	case 5:tjxsxx();
+		goto loop;break;
+	case 6:scxsxx();
+		goto loop;break;
+	case 7:xgxsxx();
+		goto loop;break;
+	case 8:printf("Exit\n");break;
+	}
+	return;
+
+}
+
+*/
